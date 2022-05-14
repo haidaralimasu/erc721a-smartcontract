@@ -13,7 +13,7 @@ contract NFT is ERC721AQueryable, Ownable, ReentrancyGuard {
     string private hiddenTokenURI;
 
     uint256 maxNfts = 10000;
-    uint256 price = 0.01 ether;
+    uint256 price = 85 ether;
     uint256 maxNftsPerTx = 5;
     uint256 nftsLimitPerAddress = 10;
 
@@ -25,12 +25,9 @@ contract NFT is ERC721AQueryable, Ownable, ReentrancyGuard {
     mapping(address => bool) whitelistedAddresses;
 
     // constructor
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        string memory _baseTokenUri,
-        string memory _hiddenTokenUri
-    ) ERC721A(_name, _symbol) {
+    constructor(string memory _baseTokenUri, string memory _hiddenTokenUri)
+        ERC721A("Crypto Manga Club", "CMC")
+    {
         setBaseTokenURI(_baseTokenUri);
         setHiddenURI(_hiddenTokenUri);
     }
@@ -62,16 +59,26 @@ contract NFT is ERC721AQueryable, Ownable, ReentrancyGuard {
         _mintNfts(msg.sender, _mintAmount);
     }
 
+    function giftNfts(address _reciever, _mintAmount) public onlyOwner {
+        require(
+            totalSupply() + _mintAmount <= maxNfts,
+            "All  Nfts are solded out !!"
+        );
+        _safeMint(_reciever, _mintAmount);
+    }
+
     modifier isPaused() {
         require(!paused, "Contract is paused right now !!");
         _;
     }
 
     modifier isPresale(address _user) {
-        require(
-            whitelistedAddresses[_user] == true,
-            "You are not whitelisted to Mint !!"
-        );
+        if (presale) {
+            require(
+                whitelistedAddresses[_user] == true,
+                "You are not whitelisted to Mint !!"
+            );
+        }
         _;
     }
 

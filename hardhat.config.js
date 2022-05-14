@@ -46,7 +46,7 @@ module.exports = {
       saveDeployments: true,
     },
     polygon: {
-      url: `https://polygon.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
+      url: `https://polygon-mainnet.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
       accounts: [PRIVATE_KEY],
       saveDeployments: true,
     },

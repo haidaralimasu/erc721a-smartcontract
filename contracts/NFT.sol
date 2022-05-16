@@ -53,7 +53,7 @@ contract NFT is ERC721AQueryable, Ownable, ReentrancyGuard {
         mintCompliance(_mintAmount, msg.sender)
     {
         require(
-            price * _mintAmount >= msg.value,
+            msg.value >= price * _mintAmount,
             "Insufficient funds to mint !!"
         );
         _mintNfts(msg.sender, _mintAmount);
